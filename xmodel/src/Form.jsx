@@ -16,6 +16,10 @@ const Form = () => {
     }
 
     const closeModal = ()=>{
+        setIsOpen(false)
+    }
+
+    const handleSubmit = ()=>{
         let hasError = false;
 
         if (!username) {
@@ -59,7 +63,7 @@ const Form = () => {
         }
 
         if (!hasError) {
-            setIsOpen(false);
+            closeModal();
         }
     }
 
@@ -68,8 +72,8 @@ const Form = () => {
         <h1>User Details Modal</h1>
         <button onClick={openModal}>Open Form</button>
         {isOpen && (
-            <div className='modal'>
-                <div className='modal-content'>
+            <div className='modal' onClick={closeModal}>
+                <div className='modal-content' onClick={(e) => e.stopPropagation()}>
                     <h1>Fill Details</h1><br/>
                     <label>Username:</label><br/>
                     <input type='text' value={username} onChange={(e)=>setUsername(e.target.value)}/><br/>
@@ -83,7 +87,7 @@ const Form = () => {
                     <label>Date Of Birth:</label><br/>
                     <input type='date' value={dob} onChange={(e)=>setDob(e.target.value)}/><br/>
                     <p>{dobError}</p>
-                    <button onClick={closeModal}>Submit</button>
+                    <button onClick={handleSubmit}>Submit</button>
                 </div>
             </div>
         )}
