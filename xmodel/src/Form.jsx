@@ -74,6 +74,7 @@ const Form = () => {
                     <div className='modal-content'>
                         <h1>Fill Details</h1>
                         <br />
+                        <form onSubmit={closeModal}>
                         <label>Username:</label><br />
                         <input type='text' id='username' value={username} onChange={(e) => setUsername(e.target.value)} /><br />
                         <p>{errors.username}</p>
@@ -87,6 +88,7 @@ const Form = () => {
                         <input type='date' id='dob' value={dob} onChange={(e) => setDob(e.target.value)} /><br />
                         <p>{errors.dob}</p>
                         <button className='submit-button' onClick={closeModal}>Submit</button>
+                        </form>
                     </div>
                 </div>
             )}
