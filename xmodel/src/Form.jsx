@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const Form = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,47 +13,57 @@ const Form = () => {
         dob: ''
     });
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest('.modal-content')) {
-                setIsOpen(false);
-                setUsername('');
-                setEmail('');
-                setPhone('');
-                setDob('');
-                setErrors({
-                    username: '',
-                    email: '',
-                    phone: '',
-                    dob: ''
-                });
-            }
-        };
-
-        document.addEventListener('click', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
-
     const openModal = () => {
         setIsOpen(true);
     };
 
     const closeModal = () => {
-        setIsOpen(false);
-        setUsername('');
-        setEmail('');
-        setPhone('');
-        setDob('');
-        setErrors({
-            username: '',
-            email: '',
-            phone: '',
-            dob: ''
-        });
+        if (!username || !email || !phone || !dob) {
+            setErrors({
+                username: !username ? 'Please fill out this field.' : '',
+                email: !email ? 'Please fill out this field.' : '',
+                phone: !phone ? 'Please fill out this field.' : '',
+                dob: !dob ? 'Please fill out this field.' : ''
+            });
+        } else if (!email.includes('@')) {
+            setErrors({
+                ...errors,
+                email: 'Invalid email. Please check your email address.'
+            });
+        } else if (phone.length !== 10 || isNaN(phone)) {
+            setErrors({
+                ...errors,
+                phone: 'Invalid phone number. Please enter a 10-digit phone number.'
+            });
+        } else if (new Date(dob) > new Date()) {
+            setErrors({
+                ...errors,
+                dob: 'Invalid date of birth. Please enter a past date.'
+            });
+        } else {
+            setIsOpen(true);
+            setUsername('');
+            setEmail('');
+            setPhone('');
+            setDob('');
+            setErrors({
+                username: '',
+                email: '',
+                phone: '',
+                dob: ''
+            });
+        }
     };
+
+    // Close the modal when clicking outside of it
+    const handleClickOutside = (e) => {
+        if (!e.target.closest('.modal-content')) {
+            setIsOpen(false)
+        }
+    };
+
+    // Add event listener for mousedown
+    document.addEventListener('mousedown', handleClickOutside);
 
     return (
         <div>
